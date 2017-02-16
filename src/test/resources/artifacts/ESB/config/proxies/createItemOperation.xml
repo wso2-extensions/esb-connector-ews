@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="createItemOperation"
+       transports="http https"
+       startOnLoad="true">
+   <description/>
+   <target>
+      <inSequence>
+         <property name="uri.var.messageDisposition"
+                   expression="//MessageDisposition/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.distinguishedFolderId"
+                   expression="//DistinguishedFolderId"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.itemClass"
+                   expression="//ItemClass/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.subject"
+                   expression="//Subject/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.body"
+                   expression="//Body"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.attachments"
+                   expression="//Attachments"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.toRecipients"
+                   expression="//ToRecipients"
+                   scope="default"
+                   type="STRING"/>
+         <ews.config>
+            <endpointUrl>https://outlook.office365.com/ews/exchange.asmx</endpointUrl>
+            <username></username>
+            <password></password>
+         </ews.config>
+         <ews.createItem>
+            <distinguishedFolderId>{$ctx:uri.var.distinguishedFolderId}</distinguishedFolderId>
+            <messageDisposition>{$ctx:uri.var.messageDisposition}</messageDisposition>
+            <itemClass>{$ctx:uri.var.itemClass}</itemClass>
+            <subject>{$ctx:uri.var.subject}</subject>
+            <body>{$ctx:uri.var.body}</body>
+            <attachments>{$ctx:uri.var.attachments}</attachments>
+            <sender>{$ctx:uri.var.sender}</sender>
+            <toRecipients>{$ctx:uri.var.toRecipients}</toRecipients>
+         </ews.createItem>
+         <respond/>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+      <faultSequence>
+         <send/>
+      </faultSequence>
+   </target>
+</proxy>

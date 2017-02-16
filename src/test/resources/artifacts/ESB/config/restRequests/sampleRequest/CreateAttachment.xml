@@ -1,0 +1,12 @@
+<CreateAttachment>
+    <ParentItemId>
+        <Id></Id>
+        <ChangeKey></ChangeKey>
+    </ParentItemId>
+    <Attachments>
+        <FileAttachment>
+            <Name>SomeFile</Name>
+            <Content>AQIDBAU=</Content>
+        </FileAttachment>
+    </Attachments>
+</CreateAttachment>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getAttachment"
+       transports="http https"
+       startOnLoad="true">
+   <description/>
+   <target>
+      <inSequence>
+         <property name="uri.var.attachmentId"
+                   expression="//AttachmentId/text()"
+                   scope="default"
+                   type="STRING"/>
+         <ews.config>
+            <endpointUrl>https://outlook.office365.com/ews/exchange.asmx</endpointUrl>
+            <username></username>
+            <password></password>
+         </ews.config>
+         <ews.getAttachment>
+            <attachmentId>{$ctx:uri.var.attachmentId}</attachmentId>
+         </ews.getAttachment>
+        <respond/>
+      </inSequence>
+<outSequence>
+         <send/>
+      </outSequence>
+      <faultSequence>
+         <send/>
+      </faultSequence>
+   </target>
+</proxy>

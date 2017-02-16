@@ -1,0 +1,13 @@
+<FindItem>
+    <Traversal>Shallow</Traversal>
+    <BaseShape>IdOnly</BaseShape>
+    <ParentFolderIds>
+        <DistinguishedFolderId Id="sentitems"/>
+    </ParentFolderIds>
+    <AdditionalProperties>
+        <FieldURI FieldURI="item:Subject"/>
+    </AdditionalProperties>
+    <QueryString>
+        <Body>hasattachment:true</Body>
+    </QueryString>
+</FindItem>

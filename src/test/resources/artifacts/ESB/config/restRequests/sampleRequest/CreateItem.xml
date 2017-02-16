@@ -1,0 +1,24 @@
+<CreateItem>
+    <MessageDisposition>SaveOnly</MessageDisposition>
+    <DistinguishedFolderId>
+        <Id>drafts</Id>
+    </DistinguishedFolderId>
+    <Message>
+        <Subject>Project</Subject>
+        <Body>
+            <BodyType>Text</BodyType>
+            <Content>EWS - IntegrationTest</Content>
+        </Body>
+        <ToRecipients>
+            <Mailbox>
+                <EmailAddress>tharindua@wso2.com</EmailAddress>
+            </Mailbox>
+        </ToRecipients>
+        <ToRecipients>
+            <Mailbox>
+                <EmailAddress>tharindua@wso2.com</EmailAddress>
+            </Mailbox>
+        </ToRecipients>
+        <IsRead>false</IsRead>
+    </Message>
+</CreateItem>
