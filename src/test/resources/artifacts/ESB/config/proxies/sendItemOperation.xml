@@ -20,8 +20,20 @@
             <password></password>
          </ews.config>
          <ews.sendItem>
+            <requestServerVersion>{$ctx:uri.var.requestServerVersion}</requestServerVersion>
+            <mailboxCulture>{$ctx:uri.var.mailboxCulture}</mailboxCulture>
+            <principalName>{$ctx:uri.var.principalName}</principalName>
+            <sid>{$ctx:uri.var.sid}</sid>
+            <primarySmtpAddress>{$ctx:uri.var.primarySmtpAddress}</primarySmtpAddress>
+            <smtpAddress>{$ctx:uri.var.smtpAddress}</smtpAddress>
             <saveItemToFolder>{$ctx:uri.var.saveItemToFolder}</saveItemToFolder>
             <itemId>{$ctx:uri.var.itemId}</itemId>
+            <occurrenceItemId>{$ctx:uri.var.occurrenceItemId}</occurrenceItemId>
+            <recurringMasterItemId>{$ctx:uri.var.recurringMasterItemId}</recurringMasterItemId>
+            <recurringMasterItemIdRanges>{$ctx:uri.var.recurringMasterItemIdRanges}</recurringMasterItemIdRanges>
+            <folderId>{$ctx:uri.var.folderId}</folderId>
+            <distinguishedFolderId>{$ctx:uri.var.distinguishedFolderId}</distinguishedFolderId>
+            <mailbox>{$ctx:uri.var.mailbox}</mailbox>
          </ews.sendItem>
          <respond/>
       </inSequence>

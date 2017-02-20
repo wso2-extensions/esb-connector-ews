@@ -21,7 +21,6 @@ package org.wso2.carbon.connector;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -30,10 +29,7 @@ import org.apache.axis2.AxisFault;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
-import org.wso2.carbon.utils.xml.StringUtils;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 
@@ -97,19 +93,8 @@ public class CreateAttachmentMediator extends AbstractConnector {
     private SOAPBody populateBody(MessageContext messageContext) throws XMLStreamException, TransformerException {
         SOAPBody soapBody = soapFactory.createSOAPBody();
         OMElement createAttachment = soapFactory.createOMElement(EWSConstants.CREATE_ATTACHMENT_ELEMENT, message);
-        OMElement parentItemIdElement = soapFactory.createOMElement(EWSConstants.PARENT_ITEM_ID_ELEMENT, message);
-        String parentItemId = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants
-                .PARENT_ITEM_ID);
-        if (!StringUtils.isEmpty(parentItemId)) {
-            OMElement parentIdOmElement = AXIOMUtil.stringToOM(parentItemId);
-            String id = parentIdOmElement.getFirstChildWithName(new QName(EWSConstants.ID_ATTRIBUTE)).getText();
-            String changeKey = parentIdOmElement.getFirstChildWithName(new QName(EWSConstants.CHANGE_KEY_ATTRIBUTE))
-                    .getText();
-            parentItemIdElement.addAttribute(soapFactory.createOMAttribute(EWSConstants.ID_ATTRIBUTE, null, id));
-            parentItemIdElement.addAttribute(soapFactory.createOMAttribute(EWSConstants.CHANGE_KEY_ATTRIBUTE, null,
-                    changeKey));
-        }
-        createAttachment.addChild(parentItemIdElement);
+        EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, createAttachment, EWSConstants
+                .PARENT_ITEM_ID_ELEMENT, EWSConstants.PARENT_ITEM_ID, message);
         EWSUtils.populateDirectElements(messageContext, createAttachment, EWSConstants.ATTACHMENTS, message);
         soapBody.addChild(createAttachment);
         return soapBody;

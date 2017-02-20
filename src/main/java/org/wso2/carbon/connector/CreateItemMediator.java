@@ -75,10 +75,11 @@ public class CreateItemMediator extends AbstractConnector {
 
     /**
      * Used to populate soap headers
+     *
      * @param messageContext message context of request
      * @return Soap Header
      * @throws XMLStreamException
-     * @throws TransformerException throws when 
+     * @throws TransformerException throws when
      */
     private SOAPHeader populateSoapHeader(MessageContext messageContext) throws XMLStreamException,
             TransformerException {
@@ -92,6 +93,7 @@ public class CreateItemMediator extends AbstractConnector {
 
     /**
      * Used to populate soap body
+     *
      * @param messageContext message context of request
      * @return Soap Body
      * @throws XMLStreamException
@@ -107,7 +109,7 @@ public class CreateItemMediator extends AbstractConnector {
         OMElement saveItemFolderIdElement = soapFactory.createOMElement(EWSConstants.SAVE_ITEM_FOLDER_ID_ELEMENT,
                 message);
         populateSaveItemFolderIdElement(messageContext, saveItemFolderIdElement);
-        if (saveItemFolderIdElement.getAllAttributes().hasNext()) {
+        if (saveItemFolderIdElement.getChildElements().hasNext()) {
             createItemElement.addChild(saveItemFolderIdElement);
         }
         OMElement itemElement = soapFactory.createOMElement(EWSConstants.ITEMS, message);
@@ -121,31 +123,36 @@ public class CreateItemMediator extends AbstractConnector {
 
     /**
      * used to populate message Element
+     *
      * @param messageContext message context of request
-     * @param baseElement baseElement of element
+     * @param baseElement    baseElement of element
      * @throws XMLStreamException
      * @throws TransformerException
      */
     private void populateMessageElement(MessageContext messageContext, OMElement baseElement) throws
             XMLStreamException, TransformerException {
-        populateDirectElements(messageContext, baseElement, EWSConstants.MIME_CONTENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.ITEM_ID);
-        populateDirectElements(messageContext, baseElement, EWSConstants.PARENT_FOLDER_ID);
+        OMElement bodyOmElement = soapFactory.createOMElement(EWSConstants.MIME_CONTENT_ELEMENT, type);
+        String mimeContentElement = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants
+                .MIME_CONTENT);
+        if (!StringUtils.isEmpty(mimeContentElement)) {
+            OMElement bodyElement = AXIOMUtil.stringToOM(mimeContentElement);
+            String characterSet = bodyElement.getFirstChildWithName(new QName(EWSConstants.CHARACTER_SET_ATTRIBUTE))
+                    .getText();
+            String body = bodyElement.getFirstChildWithName(new QName(EWSConstants.CONTENT)).getText();
+            bodyOmElement.addAttribute(EWSConstants.CHARACTER_SET_ATTRIBUTE, characterSet, null);
+            bodyOmElement.setText(body);
+            baseElement.addChild(bodyOmElement);
+        }
+        EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, baseElement, EWSConstants.ITEM_ID_ELEMENT,
+                EWSConstants.ITEM_ID, type);
+        EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, baseElement, EWSConstants
+                .PARENT_FOLDER_ID_ELEMENT, EWSConstants.PARENT_FOLDER_ID, type);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.ITEM_CLASS, baseElement, EWSConstants
                 .ITEM_CLASS_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.SUBJECT, baseElement, EWSConstants.SUBJECT_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.SENSITIVITY, baseElement, EWSConstants
                 .SENSITIVITY_ELEMENT);
-        OMElement bodyOmElement = soapFactory.createOMElement(EWSConstants.BODY_ELEMENT, type);
-        String body = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants.BODY);
-        if (!StringUtils.isEmpty(body)) {
-            OMElement bodyElement = AXIOMUtil.stringToOM(body);
-            String bodyType = bodyElement.getFirstChildWithName(new QName(EWSConstants.BODY_TYPE_ATTRIBUTE)).getText();
-            String content = bodyElement.getFirstChildWithName(new QName(EWSConstants.CONTENT)).getText();
-            bodyOmElement.addAttribute(EWSConstants.BODY_TYPE_ATTRIBUTE, bodyType, null);
-            bodyOmElement.setText(content);
-            baseElement.addChild(bodyOmElement);
-        }
+        EWSUtils.populateBodyTypeElements(messageContext, baseElement, EWSConstants.BODY_ELEMENT, EWSConstants.BODY);
         EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.ATTACHMENTS);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.DATE_TIME_RECEIVED, baseElement, EWSConstants
                 .DATE_TIME_RECEIVED_ELEMENT);
@@ -191,17 +198,22 @@ public class CreateItemMediator extends AbstractConnector {
                 EWSConstants.WEB_CLIENT_READ_FORM_QUERY_STRING_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.WEB_CLIENT_EDIT_FORM_QUERY_STRING, baseElement,
                 EWSConstants.WEB_CLIENT_EDIT_FORM_QUERY_STRING_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.CONVERSATION_ID);
-        populateDirectElements(messageContext, baseElement, EWSConstants.UNIQUE_BODY);
+        EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, baseElement, EWSConstants
+                .CONVERSATION_ID_ELEMENT, EWSConstants.CONVERSATION_ID, type);
+        EWSUtils.populateBodyTypeElements(messageContext, baseElement, EWSConstants.UNIQUE_BODY_ELEMENT,
+                EWSConstants.UNIQUE_BODY);
         populateDirectElements(messageContext, baseElement, EWSConstants.FLAG);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.STORE_ENTRY_ID, baseElement, EWSConstants
                 .STORE_ENTRY_ID_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.INSTANCE_KEY, baseElement, EWSConstants
                 .INSTANCE_KEY_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.NORMALIZED_BODY);
+        EWSUtils.populateBodyTypeElements(messageContext, baseElement, EWSConstants.NORMALIZED_BODY_ELEMENT,
+                EWSConstants.NORMALIZED_BODY);
         populateDirectElements(messageContext, baseElement, EWSConstants.ENTITY_EXTRACTION_RESULT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.POLICY_TAG);
-        populateDirectElements(messageContext, baseElement, EWSConstants.ARCHIVE_TAG);
+        EWSUtils.populateExplicitAttriute(messageContext, baseElement, EWSConstants.POLICY_TAG_ELEMENT, EWSConstants
+                .POLICY_TAG, type);
+        EWSUtils.populateExplicitAttriute(messageContext, baseElement, EWSConstants.ARCHIVE_TAG_ELEMENT, EWSConstants
+                .ARCHIVE_TAG, type);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.RETENTION_DATE, baseElement, EWSConstants
                 .RETENTION_DATE_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.PREVIEW, baseElement, EWSConstants.PREVIEW_ELEMENT);

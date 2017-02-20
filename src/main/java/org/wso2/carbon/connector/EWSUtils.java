@@ -228,19 +228,8 @@ class EWSUtils {
     static OMElement populateItemIds(MessageContext messageContext) throws XMLStreamException,
             TransformerException {
         OMElement itemIdsElement = soapFactory.createOMElement(EWSConstants.ITEM_IDS, message);
-        OMElement itemIdElement = AXIOMUtil.stringToOM((String) ConnectorUtils.lookupTemplateParamater
-                (messageContext, EWSConstants.ITEM_ID));
-        if (itemIdElement != null) {
-            String id = itemIdElement.getFirstChildWithName(new QName(EWSConstants.ID_ATTRIBUTE)).getText();
-            String changeKey = itemIdElement.getFirstChildWithName(new QName(EWSConstants.CHANGE_KEY_ATTRIBUTE))
-                    .getText();
-            OMElement itemIdOmElement = soapFactory.createOMElement(EWSConstants.ITEM_ID_ELEMENT, type);
-            itemIdOmElement.addAttribute(soapFactory.createOMAttribute(EWSConstants.ID_ATTRIBUTE, null, id));
-            itemIdOmElement.addAttribute(soapFactory.createOMAttribute(EWSConstants.CHANGE_KEY_ATTRIBUTE, null,
-                    changeKey));
-            itemIdsElement.addChild(itemIdOmElement);
-
-        }
+        EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, itemIdsElement, EWSConstants.ITEM_ID_ELEMENT,
+                EWSConstants.ITEM_ID, type);
         String occurrenceItem = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants
                 .OCCURRENCE_ITEM_ID);
         if (!StringUtils.isEmpty(occurrenceItem)) {
@@ -309,42 +298,9 @@ class EWSUtils {
      */
     static boolean populateSaveItemFolderIdElement(MessageContext messageContext, OMElement baseElement) throws
             XMLStreamException, TransformerException {
-        String folderIdString = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants.FOLDER_ID);
-        if (!StringUtils.isEmpty(folderIdString)) {
-            OMElement folderIdElement = soapFactory.createOMElement(EWSConstants.FOLDER_ID_ELEMENT, type);
-            OMElement folderElement = AXIOMUtil.stringToOM(folderIdString);
-            folderIdElement.addAttribute(soapFactory.createOMAttribute(EWSConstants.ID_ATTRIBUTE, null, folderElement
-                    .getFirstChildWithName(new QName(EWSConstants.ID_ATTRIBUTE)).getText()));
-            folderIdElement.addAttribute(soapFactory.createOMAttribute(EWSConstants.CHANGE_KEY_ATTRIBUTE, null,
-                    folderElement
-                            .getFirstChildWithName(new QName(EWSConstants.CHANGE_KEY_ATTRIBUTE)).getText()));
-            baseElement.addChild(folderIdElement);
-        }
-        String distinguishedId = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants
-                .DISTINGUISHED_FOLDER_ID);
-        OMElement distinguishedFolderIdOmElement = soapFactory.createOMElement(EWSConstants
-                .DISTINGUISHED_FOLDER_ID_ELEMENT, type);
-        if (!StringUtils.isEmpty(distinguishedId)) {
-            OMElement folderElement = AXIOMUtil.stringToOM(distinguishedId);
-            OMElement idElement = folderElement.getFirstChildWithName(new QName(EWSConstants.ID_ATTRIBUTE));
-            if (idElement != null) {
-                distinguishedFolderIdOmElement.addAttribute(soapFactory.createOMAttribute(EWSConstants.ID_ATTRIBUTE,
-                        null,
-                        idElement.getText()));
-            }
-            OMElement changeKeyElement = folderElement.getFirstChildWithName(new QName(EWSConstants
-                    .CHANGE_KEY_ATTRIBUTE));
-            if (changeKeyElement != null) {
-                distinguishedFolderIdOmElement.addAttribute(soapFactory.createOMAttribute(EWSConstants
-                                .CHANGE_KEY_ATTRIBUTE,
-                        null, changeKeyElement.getText()));
-            }
-        }
-        EWSUtils.populateDirectElements(messageContext, distinguishedFolderIdOmElement, EWSConstants.MAIL_BOX);
-        if (distinguishedFolderIdOmElement.getChildElements().hasNext() && distinguishedFolderIdOmElement
-                .getAllAttributes().hasNext()) {
-            baseElement.addChild(distinguishedFolderIdOmElement);
-        }
+        EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, baseElement, EWSConstants.FOLDER_ID_ELEMENT,
+                EWSConstants.FOLDER_ID, type);
+        populateDirectElements(messageContext, baseElement, EWSConstants.DISTINGUISHED_FOLDER_ID, type);
         OMElement addressListIdElement = soapFactory.createOMElement(EWSConstants.ADDRESS_LIST_ID_ELEMENT, type);
         EWSUtils.setValueToXMLAttribute(messageContext, addressListIdElement, EWSConstants.ADDRESS_LIST_ID, EWSConstants
                 .ID_ATTRIBUTE);
@@ -488,6 +444,59 @@ class EWSUtils {
         if (exchangeImpersonationSoapHeaderBlock.getChildElements().hasNext()) {
             soapHeader.addChild(exchangeImpersonationSoapHeaderBlock);
         }
+    }
 
+    /**
+     *
+     * @param messageContext
+     * @param baseElement
+     * @param elementName
+     * @param parameterName
+     * @throws XMLStreamException
+     */
+    static void populateBodyTypeElements(MessageContext messageContext, OMElement baseElement, String elementName,
+                                         String parameterName) throws XMLStreamException {
+        OMElement bodyOmElement = soapFactory.createOMElement(elementName, type);
+        String body = (String) ConnectorUtils.lookupTemplateParamater(messageContext, parameterName);
+        if (!StringUtils.isEmpty(body)) {
+            OMElement bodyElement = AXIOMUtil.stringToOM(body);
+            String bodyType = bodyElement.getFirstChildWithName(new QName(EWSConstants.BODY_TYPE_ATTRIBUTE)).getText();
+            String content = bodyElement.getFirstChildWithName(new QName(EWSConstants.CONTENT)).getText();
+            String truncated = bodyElement.getFirstChildWithName(new QName(EWSConstants.IS_TRUNCATED_ATTRIBUTE)).getText();
+            bodyOmElement.addAttribute(EWSConstants.BODY_TYPE_ATTRIBUTE, bodyType, null);
+            bodyOmElement.addAttribute(EWSConstants.IS_TRUNCATED_ATTRIBUTE, truncated, null);
+            bodyOmElement.setText(content);
+            baseElement.addChild(bodyOmElement);
+        }
+    }
+
+    static void populateItemIdAndChangeKeyAttributes(MessageContext messageContext, OMElement baseElement, String
+            elementName, String parameterName, OMNamespace namespace) throws XMLStreamException {
+        OMElement bodyOmElement = soapFactory.createOMElement(elementName, namespace);
+        String body = (String) ConnectorUtils.lookupTemplateParamater(messageContext, parameterName);
+        if (!StringUtils.isEmpty(body)) {
+            OMElement bodyElement = AXIOMUtil.stringToOM(body);
+            String id = bodyElement.getFirstChildWithName(new QName(EWSConstants.ID_ATTRIBUTE)).getText();
+            String changeKey = bodyElement.getFirstChildWithName(new QName(EWSConstants.CHANGE_KEY_ATTRIBUTE))
+                    .getText();
+            bodyOmElement.addAttribute(EWSConstants.ID_ATTRIBUTE, id, null);
+            bodyOmElement.addAttribute(EWSConstants.CHANGE_KEY_ATTRIBUTE, changeKey, null);
+            baseElement.addChild(bodyOmElement);
+        }
+    }
+
+    static void populateExplicitAttriute(MessageContext messageContext, OMElement baseElement, String
+            elementName, String parameterName, OMNamespace namespace) throws XMLStreamException {
+        OMElement bodyOmElement = soapFactory.createOMElement(elementName, namespace);
+        String body = (String) ConnectorUtils.lookupTemplateParamater(messageContext, parameterName);
+        if (!StringUtils.isEmpty(body)) {
+            OMElement bodyElement = AXIOMUtil.stringToOM(body);
+            String explicit = bodyElement.getFirstChildWithName(new QName(EWSConstants.IS_EXPLICIT_ATTRIBUTE))
+                    .getText();
+            String value = bodyElement.getFirstChildWithName(new QName(EWSConstants.CONTENT)).getText();
+            bodyOmElement.addAttribute(EWSConstants.IS_EXPLICIT_ATTRIBUTE, explicit, null);
+            bodyOmElement.setText(value);
+            baseElement.addChild(bodyOmElement);
+        }
     }
 }
