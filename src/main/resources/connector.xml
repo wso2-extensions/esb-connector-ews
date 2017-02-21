@@ -18,7 +18,7 @@
 -->
 <connector>
     <component name="ews" package="org.wso2.carbon.connector" >
-        <dependency component="config" />
+        <dependency component="init" />
         <dependency component="getItem" />
         <dependency component="getAttachment" />
         <dependency component="createAttachment" />

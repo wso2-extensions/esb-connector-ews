@@ -6,6 +6,18 @@
    <description/>
    <target>
       <inSequence>
+         <property name="uri.var.requestServerVersion"
+                   expression="//RequestServerVersion/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.mailboxCulture"
+                   expression="//MailboxCulture/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.smtpAddress"
+                   expression="//SmtpAddress/text()"
+                   scope="default"
+                   type="STRING"/>
          <property name="uri.var.saveItemToFolder"
                    expression="//SaveItemToFolder/text()"
                    scope="default"
@@ -14,17 +26,38 @@
                    expression="//ItemId"
                    scope="default"
                    type="STRING"/>
-         <ews.config>
-            <endpointUrl>https://outlook.office365.com/ews/exchange.asmx</endpointUrl>
+         <property name="uri.var.occurrenceItemId"
+                   expression="//OccurrenceItemId"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.recurringMasterItemId"
+                   expression="//RecurringMasterItemId"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.recurringMasterItemIdRanges"
+                   expression="//RecurringMasterItemIdRanges"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.folderId"
+                   expression="//FolderId"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.distinguishedFolderId"
+                   expression="//DistinguishedFolderId"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.addressListId"
+                   expression="//AddressListId/text()"
+                   scope="default"
+                   type="STRING"/>
+         <ews.init>
+            <endpointUrl></endpointUrl>
             <username></username>
             <password></password>
-         </ews.config>
+         </ews.init>
          <ews.sendItem>
             <requestServerVersion>{$ctx:uri.var.requestServerVersion}</requestServerVersion>
             <mailboxCulture>{$ctx:uri.var.mailboxCulture}</mailboxCulture>
-            <principalName>{$ctx:uri.var.principalName}</principalName>
-            <sid>{$ctx:uri.var.sid}</sid>
-            <primarySmtpAddress>{$ctx:uri.var.primarySmtpAddress}</primarySmtpAddress>
             <smtpAddress>{$ctx:uri.var.smtpAddress}</smtpAddress>
             <saveItemToFolder>{$ctx:uri.var.saveItemToFolder}</saveItemToFolder>
             <itemId>{$ctx:uri.var.itemId}</itemId>
@@ -33,7 +66,7 @@
             <recurringMasterItemIdRanges>{$ctx:uri.var.recurringMasterItemIdRanges}</recurringMasterItemIdRanges>
             <folderId>{$ctx:uri.var.folderId}</folderId>
             <distinguishedFolderId>{$ctx:uri.var.distinguishedFolderId}</distinguishedFolderId>
-            <mailbox>{$ctx:uri.var.mailbox}</mailbox>
+            <addressListId>{$ctx:uri.var.addressListId}</addressListId>
          </ews.sendItem>
          <respond/>
       </inSequence>

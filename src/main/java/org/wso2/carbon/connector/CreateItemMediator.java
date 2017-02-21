@@ -17,7 +17,6 @@
 */
 package org.wso2.carbon.connector;
 
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -37,9 +36,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 
-import static org.wso2.carbon.connector.EWSUtils.populateDirectElements;
-import static org.wso2.carbon.connector.EWSUtils.populateSaveItemFolderIdElement;
-
 /**
  * used to generate CreateItem Soap Request
  */
@@ -52,7 +48,6 @@ public class CreateItemMediator extends AbstractConnector {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         soapEnvelope.declareNamespace(type);
         soapEnvelope.declareNamespace(message);
-
         try {
             soapEnvelope.addChild(populateSoapHeader(messageContext));
             soapEnvelope.addChild(populateBody(messageContext));
@@ -70,7 +65,6 @@ public class CreateItemMediator extends AbstractConnector {
             log.error(msg, e);
             throw new ConnectException(e, msg);
         }
-
     }
 
     /**
@@ -108,7 +102,7 @@ public class CreateItemMediator extends AbstractConnector {
                 EWSConstants.SEND_MEETING_INVITATION_ELEMENT);
         OMElement saveItemFolderIdElement = soapFactory.createOMElement(EWSConstants.SAVE_ITEM_FOLDER_ID_ELEMENT,
                 message);
-        populateSaveItemFolderIdElement(messageContext, saveItemFolderIdElement);
+        EWSUtils.populateSaveItemFolderIdElement(messageContext, saveItemFolderIdElement);
         if (saveItemFolderIdElement.getChildElements().hasNext()) {
             createItemElement.addChild(saveItemFolderIdElement);
         }
@@ -172,12 +166,12 @@ public class CreateItemMediator extends AbstractConnector {
                 .IS_RESEND_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.IS_UNMODIFIED, baseElement, EWSConstants
                 .IS_UNMODIFIED_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.INTERNET_MESSAGE_HEADERS);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.INTERNET_MESSAGE_HEADERS);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.DATE_TIME_SENT, baseElement, EWSConstants
                 .DATE_TIME_SENT_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.DATE_TIME_CREATED, baseElement, EWSConstants
                 .DATE_TIME_CREATED_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.RESPONSE_OBJECTS);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.RESPONSE_OBJECTS);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.REMINDER_DUE_BY, baseElement, EWSConstants
                 .REMINDER_DUE_BY_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.REMINDER_IS_SET, baseElement, EWSConstants
@@ -202,14 +196,14 @@ public class CreateItemMediator extends AbstractConnector {
                 .CONVERSATION_ID_ELEMENT, EWSConstants.CONVERSATION_ID, type);
         EWSUtils.populateBodyTypeElements(messageContext, baseElement, EWSConstants.UNIQUE_BODY_ELEMENT,
                 EWSConstants.UNIQUE_BODY);
-        populateDirectElements(messageContext, baseElement, EWSConstants.FLAG);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.FLAG);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.STORE_ENTRY_ID, baseElement, EWSConstants
                 .STORE_ENTRY_ID_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.INSTANCE_KEY, baseElement, EWSConstants
                 .INSTANCE_KEY_ELEMENT);
         EWSUtils.populateBodyTypeElements(messageContext, baseElement, EWSConstants.NORMALIZED_BODY_ELEMENT,
                 EWSConstants.NORMALIZED_BODY);
-        populateDirectElements(messageContext, baseElement, EWSConstants.ENTITY_EXTRACTION_RESULT);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.ENTITY_EXTRACTION_RESULT);
         EWSUtils.populateExplicitAttriute(messageContext, baseElement, EWSConstants.POLICY_TAG_ELEMENT, EWSConstants
                 .POLICY_TAG, type);
         EWSUtils.populateExplicitAttriute(messageContext, baseElement, EWSConstants.ARCHIVE_TAG_ELEMENT, EWSConstants
@@ -217,21 +211,21 @@ public class CreateItemMediator extends AbstractConnector {
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.RETENTION_DATE, baseElement, EWSConstants
                 .RETENTION_DATE_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.PREVIEW, baseElement, EWSConstants.PREVIEW_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.RIGHTS_MANAGEMENT_LICENSE_DATA);
-        populateDirectElements(messageContext, baseElement, EWSConstants.PREDICTED_ACTION_REASONS);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.RIGHTS_MANAGEMENT_LICENSE_DATA);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.PREDICTED_ACTION_REASONS);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.IS_CLUTTER, baseElement, EWSConstants
                 .IS_CLUTTER_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.BLOCK_STATUS, baseElement, EWSConstants
                 .BLOCK_STATUS_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.HAS_BLOCKED_IMAGES, baseElement, EWSConstants
                 .HAS_BLOCKED_IMAGES_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.TEXT_BODY);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.TEXT_BODY);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.ICON_INDEX, baseElement, EWSConstants
                 .ICON_INDEX_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.SENDER);
-        populateDirectElements(messageContext, baseElement, EWSConstants.TO_RECIPIENTS);
-        populateDirectElements(messageContext, baseElement, EWSConstants.CC_RECIPIENTS);
-        populateDirectElements(messageContext, baseElement, EWSConstants.BCC_RECIPIENTS);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.SENDER);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.TO_RECIPIENTS);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.CC_RECIPIENTS);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.BCC_RECIPIENTS);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.IS_READ_RECEIPT_REQUESTED, baseElement,
                 EWSConstants.IS_READ_RECEIPT_REQUESTED_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.IS_DELIVERY_RECEIPT_REQUESTED, baseElement,
@@ -240,7 +234,7 @@ public class CreateItemMediator extends AbstractConnector {
                 .CONVERSATION_INDEX_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.CONVERSATION_TOPIC, baseElement, EWSConstants
                 .CONVERSATION_TOPIC_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.FROM);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.FROM);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.INTERNET_MESSAGE_ID, baseElement, EWSConstants
                 .INTERNET_MESSAGE_ID_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.IS_READ, baseElement, EWSConstants.IS_READ_ELEMENT);
@@ -248,13 +242,11 @@ public class CreateItemMediator extends AbstractConnector {
                 .IS_RESPONSE_REQUESTED_ELEMENT);
         EWSUtils.setValueToXMLElement(messageContext, EWSConstants.REFERENCES, baseElement, EWSConstants
                 .REFERENCES_ELEMENT);
-        populateDirectElements(messageContext, baseElement, EWSConstants.REPLY_TO);
-        populateDirectElements(messageContext, baseElement, EWSConstants.RECEIVED_BY);
-        populateDirectElements(messageContext, baseElement, EWSConstants.RECEIVED_REPRESENTING);
-        populateDirectElements(messageContext, baseElement, EWSConstants.APPROVAL_REQUEST_DATA);
-        populateDirectElements(messageContext, baseElement, EWSConstants.VOTING_INFORMATION);
-        populateDirectElements(messageContext, baseElement, EWSConstants.REMINDER_MESSAGE_DATA);
-
-
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.REPLY_TO);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.RECEIVED_BY);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.RECEIVED_REPRESENTING);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.APPROVAL_REQUEST_DATA);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.VOTING_INFORMATION);
+        EWSUtils.populateDirectElements(messageContext, baseElement, EWSConstants.REMINDER_MESSAGE_DATA);
     }
 }

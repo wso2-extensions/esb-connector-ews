@@ -17,7 +17,6 @@
 */
 package org.wso2.carbon.connector;
 
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -37,7 +36,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 
-import static org.wso2.carbon.connector.EWSUtils.populateItemIds;
 import static org.wso2.carbon.connector.EWSUtils.populateItemShape;
 
 /**
@@ -69,10 +67,11 @@ public class FindItemMediator extends AbstractConnector {
             log.error(msg, e);
             throw new ConnectException(e, msg);
         }
-
     }
+
     /**
      * Used to populate soap headers
+     *
      * @param messageContext message context of request
      * @return Soap Header
      * @throws XMLStreamException
@@ -92,6 +91,7 @@ public class FindItemMediator extends AbstractConnector {
 
     /**
      * Used to populate soap body
+     *
      * @param messageContext message context of request
      * @return Soap Body
      * @throws XMLStreamException
@@ -115,24 +115,24 @@ public class FindItemMediator extends AbstractConnector {
         EWSUtils.populateDirectElements(messageContext, findItemElement, EWSConstants.RESTRICTION, message);
         EWSUtils.populateDirectElements(messageContext, findItemElement, EWSConstants.SORT_ORDER, message);
         EWSUtils.populateDirectElements(messageContext, findItemElement, EWSConstants.PARENT_FOLDER_IDS, message);
-        OMElement queryStringElement = soapFactory.createOMElement("QueryString",message);
-        String queryString = (String) ConnectorUtils.lookupTemplateParamater(messageContext,EWSConstants.QUERY_STRING);
-        if (!StringUtils.isEmpty(queryString)){
-        OMElement omElement = AXIOMUtil.stringToOM(queryString);
+        OMElement queryStringElement = soapFactory.createOMElement("QueryString", message);
+        String queryString = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants.QUERY_STRING);
+        if (!StringUtils.isEmpty(queryString)) {
+            OMElement omElement = AXIOMUtil.stringToOM(queryString);
             OMElement resetCache = omElement.getFirstChildWithName(new QName("ResetCache"));
             OMElement returnHighlightTerms = omElement.getFirstChildWithName(new QName("ReturnHighlightTerms"));
             OMElement returnDeletedItems = omElement.getFirstChildWithName(new QName("ReturnDeletedItems"));
             OMElement body = omElement.getFirstChildWithName(new QName(EWSConstants.BODY_ELEMENT));
-            if (resetCache != null){
-                queryStringElement.addAttribute("ResetCache",resetCache.getText(),null);
+            if (resetCache != null) {
+                queryStringElement.addAttribute("ResetCache", resetCache.getText(), null);
             }
-            if (returnHighlightTerms != null){
-                queryStringElement.addAttribute("ReturnHighlightTerms",returnHighlightTerms.getText(),null);
+            if (returnHighlightTerms != null) {
+                queryStringElement.addAttribute("ReturnHighlightTerms", returnHighlightTerms.getText(), null);
             }
-            if (returnDeletedItems != null){
-                queryStringElement.addAttribute("ReturnDeletedItems",returnDeletedItems.getText(),null);
+            if (returnDeletedItems != null) {
+                queryStringElement.addAttribute("ReturnDeletedItems", returnDeletedItems.getText(), null);
             }
-            if (body != null){
+            if (body != null) {
                 queryStringElement.setText(body.getText());
             }
             findItemElement.addChild(queryStringElement);
@@ -140,6 +140,5 @@ public class FindItemMediator extends AbstractConnector {
         soapBody.addChild(findItemElement);
         return soapBody;
     }
-
 
 }

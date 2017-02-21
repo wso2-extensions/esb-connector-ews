@@ -17,7 +17,6 @@
 */
 package org.wso2.carbon.connector;
 
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -48,7 +47,6 @@ public class SendItemMediator extends AbstractConnector {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         soapEnvelope.declareNamespace(type);
         soapEnvelope.declareNamespace(message);
-
         try {
             soapEnvelope.addChild(populateSoapHeader(messageContext));
             soapEnvelope.addChild(populateBody(messageContext));
@@ -66,12 +64,11 @@ public class SendItemMediator extends AbstractConnector {
             log.error(msg, e);
             throw new ConnectException(e, msg);
         }
-
-
     }
 
     /**
      * Used to populate soap headers
+     *
      * @param messageContext message context of request
      * @return Soap Header
      * @throws XMLStreamException
@@ -89,6 +86,7 @@ public class SendItemMediator extends AbstractConnector {
 
     /**
      * Used to populate soap Body
+     *
      * @param messageContext message context of request
      * @return Soap Body
      * @throws XMLStreamException
@@ -98,7 +96,7 @@ public class SendItemMediator extends AbstractConnector {
         SOAPBody soapBody = soapFactory.createSOAPBody();
         OMElement sendItemElement = soapFactory.createOMElement(EWSConstants.SEND_ITEM_ELEMENT, message);
         if (EWSUtils.setValueToXMLAttribute(messageContext, sendItemElement, EWSConstants.SAVE_ITEM_TO_FOLDER,
-                EWSConstants.SAVE_ITEM_TO_FOLDER_ATTRIBUTE)){
+                EWSConstants.SAVE_ITEM_TO_FOLDER_ATTRIBUTE)) {
             sendItemElement.addChild(populateItemIds(messageContext));
         }
         OMElement saveItemFolderIdElement = soapFactory.createOMElement(EWSConstants.SAVE_ITEM_FOLDER_ID_ELEMENT,
@@ -109,5 +107,4 @@ public class SendItemMediator extends AbstractConnector {
         soapBody.addChild(sendItemElement);
         return soapBody;
     }
-
 }

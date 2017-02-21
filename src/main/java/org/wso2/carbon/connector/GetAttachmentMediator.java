@@ -17,7 +17,6 @@
 */
 package org.wso2.carbon.connector;
 
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -48,7 +47,6 @@ public class GetAttachmentMediator extends AbstractConnector {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         soapEnvelope.declareNamespace(type);
         soapEnvelope.declareNamespace(message);
-
         try {
             soapEnvelope.addChild(populateSoapHeader(messageContext));
             soapEnvelope.addChild(populateBody(messageContext));
@@ -66,11 +64,11 @@ public class GetAttachmentMediator extends AbstractConnector {
             log.error(msg, e);
             throw new ConnectException(e, msg);
         }
-
     }
 
     /**
      * Used to populate soap headers
+     *
      * @param messageContext message context of request
      * @return Soap Header
      * @throws XMLStreamException
@@ -88,6 +86,7 @@ public class GetAttachmentMediator extends AbstractConnector {
 
     /**
      * Used to populate soap body
+     *
      * @param messageContext message context of request
      * @return Soap Body
      * @throws XMLStreamException
@@ -111,8 +110,9 @@ public class GetAttachmentMediator extends AbstractConnector {
 
     /**
      * Used to populate AttachmentScope Element
+     *
      * @param messageContext message context of request
-     * @param baseElement baseElement of attachmentShape
+     * @param baseElement    baseElement of attachmentShape
      * @throws XMLStreamException
      * @throws TransformerException when transformation couldn't be done
      */

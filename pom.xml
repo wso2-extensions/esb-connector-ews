@@ -288,7 +288,7 @@
                             org.apache.commons.logging,
                             org.apache.synapse,
                             org.apache.synapse.config,
-                            org.apache.synapse.config.xml,
+                            org.apache.synapse.init.config.xml,
                             org.apache.synapse.core,
                             org.apache.synapse.core.axis2,
                             org.apache.synapse.endpoints.*,

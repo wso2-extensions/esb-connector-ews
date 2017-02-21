@@ -17,7 +17,6 @@
 */
 package org.wso2.carbon.connector;
 
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -65,11 +64,11 @@ public class GetItemMediator extends AbstractConnector {
             log.error(msg, e);
             throw new ConnectException(e, msg);
         }
-
     }
 
     /**
      * Used to populate soap headers
+     *
      * @param messageContext message context of request
      * @return Soap Header
      * @throws XMLStreamException
@@ -89,6 +88,7 @@ public class GetItemMediator extends AbstractConnector {
 
     /**
      * Used to populate soap Body
+     *
      * @param messageContext message context of request
      * @return Soap Body
      * @throws XMLStreamException
@@ -102,6 +102,5 @@ public class GetItemMediator extends AbstractConnector {
         soapBody.addChild(getItemElement);
         return soapBody;
     }
-
 
 }

@@ -51,10 +51,10 @@ class EWSUtils {
     /**
      * used to Create OmAttribute and set value
      *
-     * @param messageContext messageContext of Request
-     * @param rootElement rootElement to set Attribute
+     * @param messageContext    messageContext of Request
+     * @param rootElement       rootElement to set Attribute
      * @param templateParameter template parameter name
-     * @param attributeKey attribute name
+     * @param attributeKey      attribute name
      */
     static boolean setValueToXMLAttribute(MessageContext messageContext, OMElement rootElement, String
             templateParameter, String attributeKey) {
@@ -70,8 +70,8 @@ class EWSUtils {
      * Used to populate complex Elements with name spaces
      *
      * @param messageContext messageContext of Request
-     * @param baseElement base Element to set element
-     * @param parameterName parameter name as config
+     * @param baseElement    base Element to set element
+     * @param parameterName  parameter name as init.config
      * @throws XMLStreamException
      * @throws TransformerException when transformation failed
      */
@@ -88,9 +88,9 @@ class EWSUtils {
      * Used to populate complex Elements with name spaces
      *
      * @param messageContext messageContext of Request
-     * @param baseElement base Element to set element
-     * @param parameterName parameter name as config
-     * @param rootNameSpace nameSpace for Root Element
+     * @param baseElement    base Element to set element
+     * @param parameterName  parameter name as init.config
+     * @param rootNameSpace  nameSpace for Root Element
      * @throws XMLStreamException
      * @throws TransformerException when transformation get failed
      */
@@ -108,7 +108,7 @@ class EWSUtils {
     /**
      * Used to populate <TimeZoneDefinition><TimeZoneDefinition/> element
      *
-     * @param messageContext messageContext of Request
+     * @param messageContext        messageContext of Request
      * @param timeZoneContextHeader timezoneContext Header Omelement
      * @throws XMLStreamException
      * @throws TransformerException when transformation get failed
@@ -145,7 +145,7 @@ class EWSUtils {
      * used to populate <ExchangeImpersonation><ExchangeImpersonation/> element
      *
      * @param exchangeImpersonationSoapHeaderBlock <ExchangeImpersonation> root Element
-     * @param messageContext messageContext of Request
+     * @param messageContext                       messageContext of Request
      */
     private static void populateExchangeImpersonation(OMElement exchangeImpersonationSoapHeaderBlock,
                                                       MessageContext messageContext) {
@@ -165,10 +165,10 @@ class EWSUtils {
     /**
      * Used to set OmElement value from connector configuration
      *
-     * @param messageContext messageContext of Request
-     * @param templateParameter  template parameter name
-     * @param baseElement base Element to set element
-     * @param elementName element Name for create
+     * @param messageContext    messageContext of Request
+     * @param templateParameter template parameter name
+     * @param baseElement       base Element to set element
+     * @param elementName       element Name for create
      */
     static void setValueToXMLElement(MessageContext messageContext, String templateParameter, OMElement
             baseElement, String elementName) {
@@ -183,9 +183,9 @@ class EWSUtils {
     /**
      * Used to set OmElement value from connector configuration
      *
-     * @param messageContext messageContext of Request
+     * @param messageContext    messageContext of Request
      * @param templateParameter template parameter name
-     * @param rootElement rootElement to set Attribute
+     * @param rootElement       rootElement to set Attribute
      */
     private static boolean setValueToXMLElement(MessageContext messageContext, OMElement rootElement, String
             templateParameter) {
@@ -291,7 +291,7 @@ class EWSUtils {
      * used to populate <SavedItemFolderId></SavedItemFolderId> element
      *
      * @param messageContext messageContext of Request
-     * @param baseElement base Element to set element
+     * @param baseElement    base Element to set element
      * @return true if element is available
      * @throws XMLStreamException
      * @throws TransformerException when transformation failed
@@ -304,7 +304,7 @@ class EWSUtils {
         OMElement addressListIdElement = soapFactory.createOMElement(EWSConstants.ADDRESS_LIST_ID_ELEMENT, type);
         EWSUtils.setValueToXMLAttribute(messageContext, addressListIdElement, EWSConstants.ADDRESS_LIST_ID, EWSConstants
                 .ID_ATTRIBUTE);
-        if (addressListIdElement.getAllAttributes().hasNext()){
+        if (addressListIdElement.getAllAttributes().hasNext()) {
             baseElement.addChild(addressListIdElement);
         }
         return baseElement.getChildElements().hasNext();
@@ -352,7 +352,7 @@ class EWSUtils {
     /**
      * used to populate <ManagementRole></ManagementRole> element
      *
-     * @param soapHeader soapHeader omElement
+     * @param soapHeader     soapHeader omElement
      * @param messageContext messageContext of Request
      * @throws TransformerException when transformation failed
      * @throws XMLStreamException
@@ -370,7 +370,7 @@ class EWSUtils {
     /**
      * used to populate <DateTimePrecision></DateTimePrecision> element
      *
-     * @param soapHeader soapHeader omElement
+     * @param soapHeader     soapHeader omElement
      * @param messageContext messageContext of Request
      */
     static void populateDateTimePrecisionHeader(OMElement soapHeader, MessageContext messageContext) {
@@ -386,7 +386,7 @@ class EWSUtils {
     /**
      * used to populate <TimeZoneContext></TimeZoneContext> element
      *
-     * @param soapHeader soapHeader omElement
+     * @param soapHeader     soapHeader omElement
      * @param messageContext messageContext of Request
      * @throws TransformerException when transformation failed
      * @throws XMLStreamException
@@ -403,7 +403,7 @@ class EWSUtils {
     /**
      * used to populate <RequestServerVersion></RequestServerVersion> element
      *
-     * @param soapHeader soapHeader omElement
+     * @param soapHeader     soapHeader omElement
      * @param messageContext messageContext of Request
      * @throws TransformerException when transformation failed
      * @throws XMLStreamException
@@ -421,7 +421,7 @@ class EWSUtils {
     /**
      * used to populate <MailBoxCulture></MailBoxCulture> element
      *
-     * @param soapHeader soapHeader omElement
+     * @param soapHeader     soapHeader omElement
      * @param messageContext messageContext of Request
      */
     static void populateMailboxCulture(OMElement soapHeader, MessageContext messageContext) {
@@ -434,7 +434,7 @@ class EWSUtils {
     /**
      * used to populate <ExchangeImpersonationHeader></ExchangeImpersonationHeader> element
      *
-     * @param soapHeader soapHeader omElement
+     * @param soapHeader     soapHeader omElement
      * @param messageContext messageContext of Request
      */
     static void populateExchangeImpersonationHeader(OMElement soapHeader, MessageContext messageContext) {
@@ -447,7 +447,6 @@ class EWSUtils {
     }
 
     /**
-     *
      * @param messageContext
      * @param baseElement
      * @param elementName
@@ -462,7 +461,8 @@ class EWSUtils {
             OMElement bodyElement = AXIOMUtil.stringToOM(body);
             String bodyType = bodyElement.getFirstChildWithName(new QName(EWSConstants.BODY_TYPE_ATTRIBUTE)).getText();
             String content = bodyElement.getFirstChildWithName(new QName(EWSConstants.CONTENT)).getText();
-            String truncated = bodyElement.getFirstChildWithName(new QName(EWSConstants.IS_TRUNCATED_ATTRIBUTE)).getText();
+            String truncated = bodyElement.getFirstChildWithName(new QName(EWSConstants.IS_TRUNCATED_ATTRIBUTE))
+                    .getText();
             bodyOmElement.addAttribute(EWSConstants.BODY_TYPE_ATTRIBUTE, bodyType, null);
             bodyOmElement.addAttribute(EWSConstants.IS_TRUNCATED_ATTRIBUTE, truncated, null);
             bodyOmElement.setText(content);

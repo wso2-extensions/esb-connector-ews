@@ -17,7 +17,6 @@
 */
 package org.wso2.carbon.connector;
 
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -45,7 +44,6 @@ public class CreateAttachmentMediator extends AbstractConnector {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         soapEnvelope.declareNamespace(type);
         soapEnvelope.declareNamespace(message);
-
         try {
             soapEnvelope.addChild(populateSoapHeader(messageContext));
             soapEnvelope.addChild(populateBody(messageContext));
@@ -63,7 +61,6 @@ public class CreateAttachmentMediator extends AbstractConnector {
             log.error(msg, e);
             throw new ConnectException(e, msg);
         }
-
     }
 
     /**

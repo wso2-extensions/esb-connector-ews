@@ -16,7 +16,7 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<template name="config" onError="fault" xmlns="http://ws.apache.org/ns/synapse">
+<template name="init" onError="fault" xmlns="http://ws.apache.org/ns/synapse">
 	<parameter name="endpointUrl" description="Endpoint Url of the Exchange Server Endpoint"/>
 	<parameter name="username" description="Exchange server UserName"/>
 	<parameter name="password" description="Exchange server Password"/>
