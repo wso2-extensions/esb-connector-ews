@@ -140,5 +140,4 @@ public class FindItemMediator extends AbstractConnector {
         soapBody.addChild(findItemElement);
         return soapBody;
     }
-
 }

@@ -96,5 +96,4 @@ public class CreateAttachmentMediator extends AbstractConnector {
         soapBody.addChild(createAttachment);
         return soapBody;
     }
-
 }
