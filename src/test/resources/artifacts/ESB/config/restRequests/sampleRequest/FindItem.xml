@@ -2,7 +2,7 @@
     <Traversal>Shallow</Traversal>
     <BaseShape>IdOnly</BaseShape>
     <ParentFolderIds>
-        <DistinguishedFolderId Id="sentitems"/>
+        <DistinguishedFolderId Id="drafts"/>
     </ParentFolderIds>
     <AdditionalProperties>
         <FieldURI FieldURI="item:Subject"/>
