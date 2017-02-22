@@ -23,12 +23,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.util.ConnectorUtils;
 import org.wso2.carbon.utils.xml.StringUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -218,6 +221,7 @@ class EWSUtils {
             Transformer transformer = factory.newTransformer(xsltSource);
             output = new ByteArrayOutputStream();
             result = new StreamResult(output);
+            transformer.setErrorListener(new XsltErrorListener());
             transformer.transform(xmlSource, result);
             return AXIOMUtil.stringToOM(new String(output.toByteArray()));
         } finally {
@@ -507,6 +511,70 @@ class EWSUtils {
             bodyOmElement.addAttribute(EWSConstants.IS_EXPLICIT_ATTRIBUTE, explicit, null);
             bodyOmElement.setText(value);
             baseElement.addChild(bodyOmElement);
+        }
+    }
+
+    private static class XsltErrorListener implements ErrorListener {
+        Log log = LogFactory.getLog(this.getClass());
+
+        /**
+         * Receive notification of a warning.
+         * <p>
+         * <p>{@link Transformer} can use this method to report
+         * conditions that are not errors or fatal errors.  The default behaviour
+         * is to take no action.</p>
+         * <p>
+         * <p>After invoking this method, the Transformer must continue with
+         * the transformation. It should still be possible for the
+         * application to process the document through to the end.</p>
+         *
+         * @param exception The warning information encapsulated in a
+         *                  transformer exception.
+         * @throws TransformerException if the application
+         *                              chooses to discontinue the transformation.
+         * @see TransformerException
+         */
+        public void warning(TransformerException exception) throws TransformerException {
+            log.warn(exception);
+        }
+
+        /**
+         * Receive notification of a recoverable error.
+         * <p>
+         * <p>The transformer must continue to try and provide normal transformation
+         * after invoking this method.  It should still be possible for the
+         * application to process the document through to the end if no other errors
+         * are encountered.</p>
+         *
+         * @param exception The error information encapsulated in a
+         *                  transformer exception.
+         * @throws TransformerException if the application
+         *                              chooses to discontinue the transformation.
+         * @see TransformerException
+         */
+        public void error(TransformerException exception) throws TransformerException {
+            log.error(exception);
+        }
+
+        /**
+         * <p>Receive notification of a non-recoverable error.</p>
+         * <p>
+         * <p>The processor may choose to continue, but will not normally
+         * proceed to a successful completion.</p>
+         * <p>
+         * <p>The method should throw an exception if it is unable to
+         * process the error, or if it wishes execution to terminate
+         * immediately. The processor will not necessarily honor this
+         * request.</p>
+         *
+         * @param exception The error information encapsulated in a
+         *                  <code>TransformerException</code>.
+         * @throws TransformerException if the application
+         *                              chooses to discontinue the transformation.
+         * @see TransformerException
+         */
+        public void fatalError(TransformerException exception) throws TransformerException {
+            log.fatal(exception);
         }
     }
 }
