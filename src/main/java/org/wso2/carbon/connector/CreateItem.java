@@ -35,11 +35,12 @@ import org.wso2.carbon.utils.xml.StringUtils;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
+import java.io.IOException;
 
 /**
  * used to generate CreateItem Soap Request
  */
-public class CreateItemMediator extends AbstractConnector {
+public class CreateItem extends AbstractConnector {
     private OMNamespace type = EWSUtils.type;
     private OMNamespace message = EWSUtils.message;
     private SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
@@ -54,16 +55,16 @@ public class CreateItemMediator extends AbstractConnector {
             messageContext.setEnvelope(soapEnvelope);
         } catch (XMLStreamException e) {
             String msg = "Couldn't convert Element Body";
-            log.error(msg, e);
-            throw new ConnectException(e, msg);
+            handleException(msg, e, messageContext);
         } catch (AxisFault axisFault) {
             String msg = "Couldn't set SOAPEnvelope to MessageContext";
-            log.error(msg, axisFault);
-            throw new ConnectException(axisFault, msg);
+            handleException(msg, axisFault, messageContext);
         } catch (TransformerException e) {
             String msg = "Couldn't transform message";
-            log.error(msg, e);
-            throw new ConnectException(e, msg);
+            handleException(msg, e, messageContext);
+        } catch (IOException e) {
+            String msg = "Couldn't locate xslt file";
+            handleException(msg, e, messageContext);
         }
     }
 
@@ -76,7 +77,7 @@ public class CreateItemMediator extends AbstractConnector {
      * @throws TransformerException throws when
      */
     private SOAPHeader populateSoapHeader(MessageContext messageContext) throws XMLStreamException,
-            TransformerException {
+            TransformerException, IOException {
         SOAPHeader soapHeader = soapFactory.createSOAPHeader();
         EWSUtils.populateTimeZoneContextHeader(soapHeader, messageContext);
         EWSUtils.populateRequestedServerVersionHeader(soapHeader, messageContext);
@@ -93,7 +94,8 @@ public class CreateItemMediator extends AbstractConnector {
      * @throws XMLStreamException
      * @throws TransformerException
      */
-    private SOAPBody populateBody(MessageContext messageContext) throws XMLStreamException, TransformerException {
+    private SOAPBody populateBody(MessageContext messageContext) throws XMLStreamException, TransformerException,
+            IOException {
         SOAPBody soapBody = soapFactory.createSOAPBody();
         OMElement createItemElement = soapFactory.createOMElement(EWSConstants.CREATE_ITEM_ELEMENT, message);
         EWSUtils.setValueToXMLAttribute(messageContext, createItemElement, EWSConstants.MESSAGE_DISPOSITION,
@@ -124,7 +126,7 @@ public class CreateItemMediator extends AbstractConnector {
      * @throws TransformerException
      */
     private void populateMessageElement(MessageContext messageContext, OMElement baseElement) throws
-            XMLStreamException, TransformerException {
+            XMLStreamException, TransformerException, IOException {
         OMElement bodyOmElement = soapFactory.createOMElement(EWSConstants.MIME_CONTENT_ELEMENT, type);
         String mimeContentElement = (String) ConnectorUtils.lookupTemplateParamater(messageContext, EWSConstants
                 .MIME_CONTENT);

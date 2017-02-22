@@ -51,7 +51,7 @@
     <parameter name="recurringMasterItemIdRanges" description="array of occurence ranges"/>
     <!--End of Body-->
     <sequence>
-        <class name="org.wso2.carbon.connector.GetItemMediator"/>
+        <class name="org.wso2.carbon.connector.GetItem"/>
         <header name="To" expression="$ctx:uri.var.ews.apiUrl"/>
         <header name="Action" value="http://schemas.microsoft.com/exchange/services/2006/messages/GetItem"/>
         <property name="messageType" scope="axis2" value="text/xml"/>

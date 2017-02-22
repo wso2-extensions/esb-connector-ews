@@ -31,6 +31,7 @@ import org.wso2.carbon.connector.core.ConnectException;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
+import java.io.IOException;
 
 import static org.wso2.carbon.connector.EWSUtils.populateItemIds;
 import static org.wso2.carbon.connector.EWSUtils.populateItemShape;
@@ -38,7 +39,7 @@ import static org.wso2.carbon.connector.EWSUtils.populateItemShape;
 /**
  * This class used to generate GetItem Operation SOAP request
  */
-public class GetItemMediator extends AbstractConnector {
+public class GetItem extends AbstractConnector {
     OMNamespace type = EWSUtils.type;
     OMNamespace message = EWSUtils.message;
     SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
@@ -53,16 +54,16 @@ public class GetItemMediator extends AbstractConnector {
             messageContext.setEnvelope(soapEnvelope);
         } catch (XMLStreamException e) {
             String msg = "Couldn't convert Element Body";
-            log.error(msg, e);
-            throw new ConnectException(e, msg);
+            handleException(msg, e, messageContext);
         } catch (AxisFault axisFault) {
             String msg = "Couldn't set SOAPEnvelope to MessageContext";
-            log.error(msg, axisFault);
-            throw new ConnectException(axisFault, msg);
+            handleException(msg, axisFault, messageContext);
         } catch (TransformerException e) {
             String msg = "Couldn't transform message";
-            log.error(msg, e);
-            throw new ConnectException(e, msg);
+            handleException(msg, e, messageContext);
+        } catch (IOException e) {
+            String msg = "Couldn't locate xslt file";
+            handleException(msg, e, messageContext);
         }
     }
 
@@ -75,7 +76,7 @@ public class GetItemMediator extends AbstractConnector {
      * @throws TransformerException throws when
      */
     private SOAPHeader populateSoapHeader(MessageContext messageContext) throws XMLStreamException,
-            TransformerException {
+            TransformerException, IOException {
         SOAPHeader soapHeader = soapFactory.createSOAPHeader();
         EWSUtils.populateManagementRolesHeader(soapHeader, messageContext);
         EWSUtils.populateDateTimePrecisionHeader(soapHeader, messageContext);
@@ -94,7 +95,8 @@ public class GetItemMediator extends AbstractConnector {
      * @throws XMLStreamException
      * @throws TransformerException throws when
      */
-    private SOAPBody populateBody(MessageContext messageContext) throws XMLStreamException, TransformerException {
+    private SOAPBody populateBody(MessageContext messageContext) throws XMLStreamException, TransformerException,
+            IOException {
         SOAPBody soapBody = soapFactory.createSOAPBody();
         OMElement getItemElement = soapFactory.createOMElement(EWSConstants.GET_ITEM_ELEMENT, message);
         getItemElement.addChild(populateItemShape(messageContext));

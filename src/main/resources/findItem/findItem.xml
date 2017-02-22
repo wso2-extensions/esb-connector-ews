@@ -58,7 +58,7 @@
     <parameter name="queryString" description="a mailbox query string based on Advanced Query Syntax (AQS)"/>
     <!--End of Body-->
     <sequence>
-        <class name="org.wso2.carbon.connector.FindItemMediator"/>
+        <class name="org.wso2.carbon.connector.FindItem"/>
         <header name="To" expression="$ctx:uri.var.ews.apiUrl"/>
         <header name="Action" value="http://schemas.microsoft.com/exchange/services/2006/messages/FindItem"/>
         <property name="messageType" scope="axis2" value="text/xml"/>

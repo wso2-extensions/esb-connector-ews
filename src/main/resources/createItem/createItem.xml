@@ -111,7 +111,7 @@
     <parameter name="reminderMessageData" description="the data in a reminder message"/>
     <!--End of Body-->
     <sequence>
-        <class name="org.wso2.carbon.connector.CreateItemMediator"/>
+        <class name="org.wso2.carbon.connector.CreateItem"/>
         <header name="To" expression="$ctx:uri.var.ews.apiUrl"/>
         <header name="Action" value="http://schemas.microsoft.com/exchange/services/2006/messages/CreateItem"/>
         <property name="messageType" scope="axis2" value="text/xml"/>

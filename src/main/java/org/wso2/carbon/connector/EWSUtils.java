@@ -36,6 +36,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Utility functions for EWS Connector
@@ -76,7 +77,7 @@ class EWSUtils {
      * @throws TransformerException when transformation failed
      */
     static void populateDirectElements(MessageContext messageContext, OMElement baseElement, String
-            parameterName) throws XMLStreamException, TransformerException {
+            parameterName) throws XMLStreamException, TransformerException, IOException {
         String parametrisedValue = (String) ConnectorUtils.lookupTemplateParamater(messageContext, parameterName);
         if (!StringUtils.isEmpty(parametrisedValue)) {
             OMElement element = AXIOMUtil.stringToOM(parametrisedValue);
@@ -95,7 +96,7 @@ class EWSUtils {
      * @throws TransformerException when transformation get failed
      */
     static void populateDirectElements(MessageContext messageContext, OMElement baseElement, String
-            parameterName, OMNamespace rootNameSpace) throws XMLStreamException, TransformerException {
+            parameterName, OMNamespace rootNameSpace) throws XMLStreamException, TransformerException, IOException {
         String parametrisedValue = (String) ConnectorUtils.lookupTemplateParamater(messageContext, parameterName);
         if (!StringUtils.isEmpty(parametrisedValue)) {
             OMElement element = AXIOMUtil.stringToOM(parametrisedValue);
@@ -114,7 +115,7 @@ class EWSUtils {
      * @throws TransformerException when transformation get failed
      */
     private static void populateTimeZoneDefinitionHeader(MessageContext messageContext, OMElement
-            timeZoneContextHeader) throws XMLStreamException, TransformerException {
+            timeZoneContextHeader) throws XMLStreamException, TransformerException, IOException {
         String timeZoneDefinitionObject = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                 EWSConstants.TIME_ZONE_DEFINITION);
         OMElement timezoneDefinitionSoapElement = soapFactory.createOMElement(EWSConstants
@@ -205,16 +206,25 @@ class EWSUtils {
      * @throws TransformerException when transformation failed
      * @throws XMLStreamException
      */
-    static OMElement setNameSpaceForElements(OMElement element) throws TransformerException, XMLStreamException {
-        Source xmlSource = new OMSource(element);
-        StreamSource xsltSource = new StreamSource(EWSUtils.class.getClassLoader().getResourceAsStream
-                (XSLT_FILE_LOCATION));
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer(xsltSource);
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        StreamResult result = new StreamResult(output);
-        transformer.transform(xmlSource, result);
-        return AXIOMUtil.stringToOM(new String(output.toByteArray()));
+    static OMElement setNameSpaceForElements(OMElement element) throws IOException, TransformerException,
+            XMLStreamException {
+        ByteArrayOutputStream output = null;
+        StreamResult result;
+        try {
+            Source xmlSource = new OMSource(element);
+            StreamSource xsltSource = new StreamSource(EWSUtils.class.getClassLoader().getResourceAsStream
+                    (XSLT_FILE_LOCATION));
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(xsltSource);
+            output = new ByteArrayOutputStream();
+            result = new StreamResult(output);
+            transformer.transform(xmlSource, result);
+            return AXIOMUtil.stringToOM(new String(output.toByteArray()));
+        } finally {
+            if (output != null) {
+                output.close();
+            }
+        }
     }
 
     /**
@@ -226,7 +236,7 @@ class EWSUtils {
      * @throws TransformerException when transformation failed
      */
     static OMElement populateItemIds(MessageContext messageContext) throws XMLStreamException,
-            TransformerException {
+            TransformerException, IOException {
         OMElement itemIdsElement = soapFactory.createOMElement(EWSConstants.ITEM_IDS, message);
         EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, itemIdsElement, EWSConstants.ITEM_ID_ELEMENT,
                 EWSConstants.ITEM_ID, type);
@@ -297,7 +307,7 @@ class EWSUtils {
      * @throws TransformerException when transformation failed
      */
     static boolean populateSaveItemFolderIdElement(MessageContext messageContext, OMElement baseElement) throws
-            XMLStreamException, TransformerException {
+            XMLStreamException, TransformerException, IOException {
         EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, baseElement, EWSConstants.FOLDER_ID_ELEMENT,
                 EWSConstants.FOLDER_ID, type);
         populateDirectElements(messageContext, baseElement, EWSConstants.DISTINGUISHED_FOLDER_ID, type);
@@ -319,7 +329,7 @@ class EWSUtils {
      * @throws TransformerException when transformation failed
      */
     static OMElement populateItemShape(MessageContext messageContext) throws XMLStreamException,
-            TransformerException {
+            TransformerException, IOException {
         OMElement itemShapeElement = soapFactory.createOMElement(EWSConstants.ITEM_SHAPE, message);
         setValueToXMLElement(messageContext, EWSConstants.BASE_SHAPE, itemShapeElement, EWSConstants
                 .BASE_SHAPE_ELEMENT);
@@ -358,7 +368,7 @@ class EWSUtils {
      * @throws XMLStreamException
      */
     static void populateManagementRolesHeader(OMElement soapHeader, MessageContext messageContext) throws
-            TransformerException, XMLStreamException {
+            TransformerException, XMLStreamException, IOException {
         OMElement managementRoleHeader = soapFactory.createOMElement(EWSConstants.MANAGEMENT_ROLES_HEADER, type);
         EWSUtils.populateDirectElements(messageContext, managementRoleHeader, EWSConstants.USER_ROLES);
         EWSUtils.populateDirectElements(messageContext, managementRoleHeader, EWSConstants.APPLICATION_ROLES);
@@ -392,7 +402,7 @@ class EWSUtils {
      * @throws XMLStreamException
      */
     static void populateTimeZoneContextHeader(OMElement soapHeader, MessageContext messageContext) throws
-            TransformerException, XMLStreamException {
+            TransformerException, XMLStreamException, IOException {
         OMElement timeZoneContextHeader = soapFactory.createOMElement(EWSConstants.TIME_ZONE_CONTEXT_HEADER, type);
         populateTimeZoneDefinitionHeader(messageContext, timeZoneContextHeader);
         if (timeZoneContextHeader.getChildElements().hasNext()) {

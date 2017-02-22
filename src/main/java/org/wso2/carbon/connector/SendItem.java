@@ -31,14 +31,18 @@ import org.wso2.carbon.connector.core.ConnectException;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
+import java.io.IOException;
+
+import static org.wso2.carbon.connector.EWSUtils.populateItemIds;
+import static org.wso2.carbon.connector.EWSUtils.populateSaveItemFolderIdElement;
 
 /**
- * Class used to Create CreateAttachment Soap Request
+ * Used to generate SendItem operation Soap Request.
  */
-public class CreateAttachmentMediator extends AbstractConnector {
-    OMNamespace type = EWSUtils.type;
-    OMNamespace message = EWSUtils.message;
-    SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
+public class SendItem extends AbstractConnector {
+    private OMNamespace type = EWSUtils.type;
+    private OMNamespace message = EWSUtils.message;
+    private SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
 
     public void connect(MessageContext messageContext) throws ConnectException {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
@@ -50,50 +54,59 @@ public class CreateAttachmentMediator extends AbstractConnector {
             messageContext.setEnvelope(soapEnvelope);
         } catch (XMLStreamException e) {
             String msg = "Couldn't convert Element Body";
-            log.error(msg, e);
-            throw new ConnectException(e, msg);
+            handleException(msg, e, messageContext);
         } catch (AxisFault axisFault) {
             String msg = "Couldn't set SOAPEnvelope to MessageContext";
-            log.error(msg, axisFault);
-            throw new ConnectException(axisFault, msg);
+            handleException(msg, axisFault, messageContext);
         } catch (TransformerException e) {
             String msg = "Couldn't transform message";
-            log.error(msg, e);
-            throw new ConnectException(e, msg);
+            handleException(msg, e, messageContext);
+        } catch (IOException e) {
+            String msg = "Couldn't locate xslt file";
+            handleException(msg, e, messageContext);
         }
     }
 
     /**
      * Used to populate soap headers
+     *
      * @param messageContext message context of request
      * @return Soap Header
      * @throws XMLStreamException
-     * @throws TransformerException
+     * @throws TransformerException throws when
      */
     private SOAPHeader populateSoapHeader(MessageContext messageContext) throws XMLStreamException,
             TransformerException {
         SOAPHeader soapHeader = soapFactory.createSOAPHeader();
-        EWSUtils.populateTimeZoneContextHeader(soapHeader, messageContext);
         EWSUtils.populateRequestedServerVersionHeader(soapHeader, messageContext);
         EWSUtils.populateMailboxCulture(soapHeader, messageContext);
         EWSUtils.populateExchangeImpersonationHeader(soapHeader, messageContext);
         return soapHeader;
     }
 
+
     /**
      * Used to populate soap Body
+     *
      * @param messageContext message context of request
      * @return Soap Body
      * @throws XMLStreamException
-     * @throws TransformerException
+     * @throws TransformerException throws when
      */
-    private SOAPBody populateBody(MessageContext messageContext) throws XMLStreamException, TransformerException {
+    private SOAPBody populateBody(MessageContext messageContext) throws XMLStreamException, TransformerException,
+            IOException {
         SOAPBody soapBody = soapFactory.createSOAPBody();
-        OMElement createAttachment = soapFactory.createOMElement(EWSConstants.CREATE_ATTACHMENT_ELEMENT, message);
-        EWSUtils.populateItemIdAndChangeKeyAttributes(messageContext, createAttachment, EWSConstants
-                .PARENT_ITEM_ID_ELEMENT, EWSConstants.PARENT_ITEM_ID, message);
-        EWSUtils.populateDirectElements(messageContext, createAttachment, EWSConstants.ATTACHMENTS, message);
-        soapBody.addChild(createAttachment);
+        OMElement sendItemElement = soapFactory.createOMElement(EWSConstants.SEND_ITEM_ELEMENT, message);
+        if (EWSUtils.setValueToXMLAttribute(messageContext, sendItemElement, EWSConstants.SAVE_ITEM_TO_FOLDER,
+                EWSConstants.SAVE_ITEM_TO_FOLDER_ATTRIBUTE)) {
+            sendItemElement.addChild(populateItemIds(messageContext));
+        }
+        OMElement saveItemFolderIdElement = soapFactory.createOMElement(EWSConstants.SAVE_ITEM_FOLDER_ID_ELEMENT,
+                message);
+        if (populateSaveItemFolderIdElement(messageContext, saveItemFolderIdElement)) {
+            sendItemElement.addChild(saveItemFolderIdElement);
+        }
+        soapBody.addChild(sendItemElement);
         return soapBody;
     }
 }

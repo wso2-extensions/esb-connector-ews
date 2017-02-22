@@ -36,7 +36,7 @@
     <parameter name="attachmentId" description="Unique Id of Attachment"/>
     <!--End of Body-->
     <sequence>
-        <class name="org.wso2.carbon.connector.GetAttachmentMediator"/>
+        <class name="org.wso2.carbon.connector.GetAttachment"/>
         <header name="To" expression="$ctx:uri.var.ews.apiUrl"/>
         <header name="Action" value="http://schemas.microsoft.com/exchange/services/2006/messages/GetAttachment"/>
         <property name="messageType" scope="axis2" value="text/xml"/>

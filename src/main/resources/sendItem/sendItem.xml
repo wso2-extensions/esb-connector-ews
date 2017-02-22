@@ -36,7 +36,7 @@
     <parameter name="addressListId" description="Id of address list"/>
     <!--End of Body-->
     <sequence>
-        <class name="org.wso2.carbon.connector.SendItemMediator"/>
+        <class name="org.wso2.carbon.connector.SendItem"/>
         <header name="To" expression="$ctx:uri.var.ews.apiUrl"/>
         <header name="Action"
                 value="http://schemas.microsoft.com/exchange/services/2006/messages/SendItem"/>
