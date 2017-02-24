@@ -33,7 +33,6 @@
     <parameter name="sendMeetingInvitations" description="meeting invitation to be sent draft "/>
     <parameter name="folderId" description="Folder Id and Change Key"/>
     <parameter name="distinguishedFolderId" description = "MailBox Folder"/>
-    <parameter name="mailbox" description="mailbox definition according to Active directory"/>
     <parameter name="addressListId" description="Id of address list"/>
     <parameter name="mimeContent" description="base64 encoded mimeContent"/>
     <parameter name="itemId" description="unique key and change key for Item at exchange store"/>

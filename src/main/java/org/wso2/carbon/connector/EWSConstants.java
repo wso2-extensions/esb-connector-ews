@@ -250,4 +250,20 @@ class EWSConstants {
     static final String SORT_ORDER = "sortOrder";
     static final String PARENT_FOLDER_IDS = "parentFolderIds";
     static final String QUERY_STRING = "queryString";
+    public static final String DELETE_ITEM_ELEMENT = "DeleteItem";
+    public static final String DELETE_TYPE = "deleteType";
+    public static final String DELETE_TYPE_ELEMENT = "DeleteType";
+    public static final String SEND_MEETING_CANCELLATIONS = "sendMeetingCancellations";
+    public static final String SEND_MEETING_CANCELLATIONS_ELEMENT = "SendMeetingCancellations";
+    public static final String AFFECTED_TASK_OCCURRENCES = "affectedTaskOccurrences";
+    public static final String AFFECTED_TASK_OCCURRENCES_ATTRIBUTE = "AffectedTaskOccurrences";
+    public static final String SUPPRESS_READ_RECEIPTS = "suppressReadReceipts";
+    public static final String SUPPRESS_READ_RECEIPTS_ATTRIBUTE = "SuppressReadReceipts";
+    public static final String UPDATE_ITEM_ELEMENT = "UpdateItem";
+    public static final String CONFLICT_RESOLUTION = "conflictResolution";
+    public static final String CONFLICT_RESOLUTION_ELEMENT = "ConflictResolution";
+    public static final String SEND_MEETING_INVITATIONS_OR_CANCELLATIONS = "sendMeetingInvitationsOrCancellations";
+    public static final String SEND_MEETING_INVITATIONS_OR_CANCELLATIONS_ATTRIBUTE = "SendMeetingInvitationsOrCancellations";
+
+    public static final String ITEM_CHANGES = "itemChanges";
 }

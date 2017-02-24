@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
    Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 
@@ -16,18 +15,20 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<connector>
-    <component name="ews" package="org.wso2.carbon.connector" >
-        <dependency component="init" />
-        <dependency component="getItem" />
-        <dependency component="getAttachment" />
-        <dependency component="createAttachment" />
-        <dependency component="sendItem" />
-        <dependency component="createItem" />
-        <dependency component="findItem" />
-        <dependency component="deleteItem" />
-        <dependency component="updateItem" />
-        <description>WSO2 EWS connector library</description>
-    </component>
-    <icon>icon/icon-small.gif</icon>
-</connector>
+<UpdateItem>
+    <MessageDisposition>SaveOnly</MessageDisposition>
+    <ConflictResolution>AutoResolve</ConflictResolution>
+    <ItemChanges>
+        <ItemChange>
+            <ItemId Id="abc=" ChangeKey="AAAMKdoR"/>
+            <Updates>
+                <AppendToItemField>
+                    <FieldURI FieldURI="item:Body"/>
+                    <Message>
+                        <Body BodyType="Text">Some additional text to append</Body>
+                    </Message>
+                </AppendToItemField>
+            </Updates>
+        </ItemChange>
+    </ItemChanges>
+</UpdateItem>

@@ -16,18 +16,11 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<connector>
-    <component name="ews" package="org.wso2.carbon.connector" >
-        <dependency component="init" />
-        <dependency component="getItem" />
-        <dependency component="getAttachment" />
-        <dependency component="createAttachment" />
-        <dependency component="sendItem" />
-        <dependency component="createItem" />
-        <dependency component="findItem" />
-        <dependency component="deleteItem" />
-        <dependency component="updateItem" />
-        <description>WSO2 EWS connector library</description>
-    </component>
-    <icon>icon/icon-small.gif</icon>
-</connector>
+<component name="deleteItem" type="synapse/template" >
+    <subComponents>
+        <component name="deleteItem" >
+            <file>deleteItem.xml</file>
+            <description>Delete Item operation</description>
+        </component>
+    </subComponents>
+</component>

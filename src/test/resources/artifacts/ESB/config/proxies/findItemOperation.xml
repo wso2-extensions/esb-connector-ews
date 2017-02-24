@@ -156,9 +156,9 @@
                    scope="default"
                    type="STRING"/>
          <ews.init>
-            <endpointUrl></endpointUrl>
-            <username></username>
-            <password></password>
+            <endpointUrl>{get-property('system','EWS_ENDPOINT_URL')}</endpointUrl>
+            <username>{get-property('system','EWS_ENDPOINT_USER_NAME')}</username>
+            <password>{get-property('system','EWS_ENDPOINT_PASSWORD')}</password>
          </ews.init>
          <ews.findItem>
             <userRoles>{$ctx:uri.var.userRoles}</userRoles>
