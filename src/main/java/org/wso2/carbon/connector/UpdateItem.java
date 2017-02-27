@@ -84,7 +84,6 @@ public class UpdateItem extends AbstractConnector {
         return soapHeader;
     }
 
-
     /**
      * Used to populate soap Body
      *

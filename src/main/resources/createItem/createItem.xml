@@ -153,6 +153,5 @@
                 </call>
             </else>
         </filter>
-
     </sequence>
 </template>

@@ -84,7 +84,6 @@ public class DeleteItem extends AbstractConnector {
         return soapHeader;
     }
 
-
     /**
      * Used to populate soap Body
      *
