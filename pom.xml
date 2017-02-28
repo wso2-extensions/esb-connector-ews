@@ -16,11 +16,13 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.carbon.connector</groupId>
     <artifactId>org.wso2.carbon.connector.ews</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - Connector For EWS</name>
     <url>http://wso2.org</url>
@@ -138,7 +140,8 @@
     <scm>
         <connection>scm:git:https://github.com/wso2-extensions/esb-connector-ews.git</connection>
         <url>https://github.com/wso2-extensions/esb-connector-ews.git</url>
-        <developerConnection>scm:git:https://github.com/wso2-extensions/esb-connector-ews</developerConnection>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/esb-connector-ews
+        </developerConnection>
         <tag>HEAD</tag>
     </scm>
     <build>
@@ -205,7 +208,10 @@
                 <version>2.12.4</version>
                 <inherited>false</inherited>
                 <configuration>
-                     <argLine>-DEWS_ENDPOINT_URL=https://outlook.office365.com/ews/exchange.asmx -DEWS_ENDPOINT_USER_NAME=tharindu1st@hcms2017.onmicrosoft.com -DEWS_ENDPOINT_PASSWORD=wso2321#qa</argLine>
+                    <argLine>-DEWS_ENDPOINT_URL=https://outlook.office365.com/ews/exchange.asmx
+                        -DEWS_ENDPOINT_USER_NAME=tharindu1st@hcms2017.onmicrosoft.com
+                        -DEWS_ENDPOINT_PASSWORD=wso2321#qa
+                    </argLine>
                     <!-- <argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=128m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m -Xdebug
                        -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006 </argLine> -->
                     <argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=128m</argLine>
