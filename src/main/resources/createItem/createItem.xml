@@ -1,0 +1,157 @@
+<!--
+   Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+
+   WSO2 Inc. licenses this file to you under the Apache License,
+   Version 2.0 (the "License"); you may not use this file except
+   in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied. See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+<template name="createItem" onError="fault" xmlns="http://ws.apache.org/ns/synapse">
+    <!-- Header Elements Start-->
+    <parameter name="timeZoneDefinition" description="TimeZoneDefinition Element"/>
+    <parameter name="periods" description="Periods element"/>
+    <parameter name="transitionsGroups" description="Transition Groups"/>
+    <parameter name="transitions" description="Transitions"/>
+    <parameter name="requestServerVersion" description="Server version of EWS Endpoint"/>
+    <parameter name="mailboxCulture" description="culture to use when opening a mailbox"/>
+    <parameter name="principalName" description="user principal Name for Exchange Impersonation"/>
+    <parameter name="sid" description="security identifier for account to use"/>
+    <parameter name="primarySmtpAddress" description="primary email address for delegation"/>
+    <parameter name="smtpAddress" description="email address for impersonation"/>
+    <!-- Header Elements END-->
+    <!--Start of Body-->
+    <parameter name="messageDisposition" description="message to be sent or draft"/>
+    <parameter name="sendMeetingInvitations" description="meeting invitation to be sent draft "/>
+    <parameter name="folderId" description="Folder Id and Change Key"/>
+    <parameter name="distinguishedFolderId" description = "MailBox Folder"/>
+    <parameter name="addressListId" description="Id of address list"/>
+    <parameter name="mimeContent" description="base64 encoded mimeContent"/>
+    <parameter name="itemId" description="unique key and change key for Item at exchange store"/>
+    <parameter name="parentFolderId" description="parent folder unique Id of item"/>
+    <parameter name="itemClass" description="represents the message class of an item"/>
+    <parameter name="subject" description="subject of Mail"/>
+    <parameter name="sensitivity" description="level of sensitivity"/>
+    <parameter name="body" description = "Body of Mail"/>
+    <parameter name="attachments" description="Attachments in mail"/>
+    <parameter name="dateTimeReceived" description="date and time of item to be received to MailBox"/>
+    <parameter name="size" description="size of mailbox Item"/>
+    <parameter name="categories" description="which categories belong mail"/>
+    <parameter name="importance" description="importance of mail"/>
+    <parameter name="inReplyTo" description = "item unique Id for reply"/>
+    <parameter name="isSubmitted" description="Item available in outbox"/>
+    <parameter name="isDraft" description="weather item is draft"/> 
+    <parameter name="isFromMe" description="whether a user sent an item to him or herself"/>
+    <parameter name="isResend" description="whether the item had previously been sent"/>
+    <parameter name="isUnmodified" description="whether the item has been modified"/>
+    <parameter name="internetMessageHeaders" description="set of Message Headers"/>
+    <parameter name="dateTimeSent" description="date and time at which an item in a mailbox was sent"/>
+    <parameter name="dateTimeCreated" description="date and time that an item in the mailbox was created"/>
+    <parameter name="responseObjects" description="response objects that are associated with an item in the Exchange store"/>
+    <parameter name="reminderDueBy" description="represents the date and time when the event occurs"/>
+    <parameter name="reminderIsSet" description="reminder has been set for an item in the Exchange store"/>
+    <parameter name="reminderNextTime" description=" date and time for the next reminder"/>
+    <parameter name="reminderMinutesBeforeStart" description="number of minutes before an event occurs when a reminder is displayed"/>
+    <parameter name="displayCc" description="concatenated string of all Cc recipient display names"/>
+    <parameter name="displayTo" description="concatenated string of all To recipient display names"/>
+    <parameter name="hasAttachments" description="contains attachment"/>
+    <parameter name="extendedProperty" description="extended MAPI properties on folders and items"/>
+    <parameter name="culture" description="culture for a given item in a mailbox"/>
+    <parameter name="effectiveRights" description="client's rights based on the permission settings for the item or folder"/>
+    <parameter name="lastModifiedName" description="display name of the last user to modify an item"/>
+    <parameter name="lastModifiedTime" description="display last modified time"/>
+    <parameter name="isAssociated" description="item is associated with a folder"/>
+    <parameter name="webClientReadFormQueryString" description="URL to concatenate to the Outlook Web App endpoint to read an item in Outlook Web App"/>
+    <parameter name="webClientEditFormQueryString" description="URL to concatenate to the Outlook Web App endpoint to edit an item in Outlook Web App"/>
+    <parameter name="conversationId" description="identifier of an item or conversation"/>
+    <parameter name="uniqueBody" description="HTML fragment or plain text which represents the unique body of this conversation"/>
+    <parameter name="flag" description="flag on a mailbox item"/>
+    <parameter name="storeEntryId" description="Exchange store identifier of an item"/>
+    <parameter name="instanceKey" description="instance key for an item or conversation"/>
+    <parameter name="normalizedBody" description="HTML representation of the Body property of an item as a fragment that can be inserted into another HTML body"/>
+    <parameter name="entityExtractionResult" description="EntityExtractionResult property of an item"/>
+    <parameter name="policyTag" description="retention identifier on an item or folder"/>
+    <parameter name="archiveTag" description="retention identifier of the archive tag set on an item or folder"/>
+    <parameter name="retentionDate" description="retention identifier of the archive tag set on an item or folder"/>
+    <parameter name="preview" description="first 256 characters of an item for display"/>
+    <parameter name="rightsManagementLicenseData" description="specifies information about the rights management license for an item"/>
+    <parameter name="predictedActionReasons" description="intended for internal use only"/>
+    <parameter name="isClutter" description="intended for internal use only"/>
+    <parameter name="blockStatus" description="specifies the block status of an item"/>
+    <parameter name="hasBlockedImages" description="value that indicates whether the item has blocked images"/>
+    <parameter name="textBody" description="specifies the text body"/>
+    <parameter name="iconIndex" description="icon index for an item or conversation"/>
+    <parameter name="sender" description="senders mailbox"/>
+    <parameter name="toRecipients" description="receipients mailbox"/>
+    <parameter name="ccRecipients" description="CC receipients mailbox"/>
+    <parameter name="bccRecipients" description="BCC receipients mailbox"/>
+    <parameter name="isReadReceiptRequested" description="indicates whether the sender of an item requests a read receipt"/>
+    <parameter name="isDeliveryReceiptRequested" description="the sender of an item requests a delivery receipt"/>
+    <parameter name="conversationIndex" description="binary ID that represents the thread to which this message belongs"/>
+    <parameter name="conversationTopic" description="represents the conversation topic"/>
+    <parameter name="from" description="address from which the message was sent"/>
+    <parameter name="internetMessageId" description="Internet message identifier of an item"/>
+    <parameter name="isRead" description="whether a message has been read"/>
+    <parameter name="isResponseRequested" description="whether a response to an item is requested"/>
+    <parameter name="references" description=" the Usenet header that is used to associate replies with the original messages"/>
+    <parameter name="replyTo" description="an array of addresses to which replies should be sent"/>
+    <parameter name="receivedBy" description="the delegate in a delegate access scenario"/>
+    <parameter name="receivedRepresenting" description=" the principal in a delegate access scenario"/>
+    <parameter name="approvalRequestData" description="approval state of an approval request message"/>
+    <parameter name="votingInformation" description="voting information on a voting message and approval request message where Approve and Reject are the voting options"/>
+    <parameter name="reminderMessageData" description="the data in a reminder message"/>
+    <!--End of Body-->
+    <sequence>
+        <class name="org.wso2.carbon.connector.CreateItem"/>
+        <header name="To" expression="$ctx:uri.var.ews.apiUrl"/>
+        <header name="Action" value="http://schemas.microsoft.com/exchange/services/2006/messages/CreateItem"/>
+        <property name="messageType" scope="axis2" value="text/xml"/>
+        <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+        <property name="FORCE_ERROR_ON_SOAP_FAULT" value="true"/>
+        <property name="Authorization" expression="$ctx:EWS_AUTHORIZATION_HEADER" scope="transport"/>
+        <filter source="$ctx:EWS_BLOCKING" regex="true">
+            <then>
+                <call blocking="true">
+                    <endpoint>
+                        <default format="soap11">
+                            <timeout>
+                                <duration>60000</duration>
+                                <responseAction>fault</responseAction>
+                            </timeout>
+                            <suspendOnFailure>
+                                <initialDuration>2000</initialDuration>
+                                <progressionFactor>1.0</progressionFactor>
+                                <maximumDuration>3000</maximumDuration>
+                            </suspendOnFailure>
+                        </default>
+                    </endpoint>
+                </call>
+            </then>
+            <else>
+                <call>
+                    <endpoint>
+                        <default format="soap11">
+                            <timeout>
+                                <duration>60000</duration>
+                                <responseAction>fault</responseAction>
+                            </timeout>
+                            <suspendOnFailure>
+                                <initialDuration>2000</initialDuration>
+                                <progressionFactor>1.0</progressionFactor>
+                                <maximumDuration>3000</maximumDuration>
+                            </suspendOnFailure>
+                        </default>
+                    </endpoint>
+                </call>
+            </else>
+        </filter>
+    </sequence>
+</template>

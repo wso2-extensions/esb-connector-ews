@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+
+   WSO2 Inc. licenses this file to you under the Apache License,
+   Version 2.0 (the "License"); you may not use this file except
+   in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied. See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="createAttachmentOperation"
+       transports="http https"
+       startOnLoad="true">
+   <description/>
+   <target>
+      <inSequence>
+         <property name="uri.var.timeZoneDefinition"
+                   expression="//TimeZoneDefinition"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.periods"
+                   expression="//Periods"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.transitionsGroups"
+                   expression="//TransitionsGroups"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.transitions"
+                   expression="//Transitions"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.requestServerVersion"
+                   expression="//RequestServerVersion/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.mailboxCulture"
+                   expression="//MailboxCulture/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.smtpAddress"
+                   expression="//SmtpAddress/text()"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.parentItemId"
+                   expression="//ParentItemId"
+                   scope="default"
+                   type="STRING"/>
+         <property name="uri.var.attachments"
+                   expression="//Attachments"
+                   scope="default"
+                   type="STRING"/>
+         <ews.init>
+            <endpointUrl>{get-property('system','EWS_ENDPOINT_URL')}</endpointUrl>
+            <username>{get-property('system','EWS_ENDPOINT_USER_NAME')}</username>
+            <password>{get-property('system','EWS_ENDPOINT_PASSWORD')}</password>
+         </ews.init>
+         <ews.createAttachment>
+            <timeZoneDefinition>{$ctx:uri.var.timeZoneDefinition}</timeZoneDefinition>
+            <periods>{$ctx:uri.var.periods}</periods>
+            <transitionsGroups>{$ctx:uri.var.transitionsGroups}</transitionsGroups>
+            <transitions>{$ctx:uri.var.transitions}</transitions>
+            <requestServerVersion>{$ctx:uri.var.requestServerVersion}</requestServerVersion>
+            <mailboxCulture>{$ctx:uri.var.mailboxCulture}</mailboxCulture>
+            <principalName>{$ctx:uri.var.principalName}</principalName>
+            <sid>{$ctx:uri.var.sid}</sid>
+            <primarySmtpAddress>{$ctx:uri.var.primarySmtpAddress}</primarySmtpAddress>
+            <smtpAddress>{$ctx:uri.var.smtpAddress}</smtpAddress>
+            <attachments>{$ctx:uri.var.attachments}</attachments>
+            <parentItemId>{$ctx:uri.var.parentItemId}</parentItemId>
+         </ews.createAttachment>
+         <respond/>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+      <faultSequence>
+         <send/>
+      </faultSequence>
+   </target>
+</proxy>
