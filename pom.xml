@@ -137,6 +137,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/esb-connector-ews.git</connection>
+        <url>https://github.com/wso2-extensions/esb-connector-ews.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/esb-connector-ews</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <build>
         <plugins>
             <plugin>
