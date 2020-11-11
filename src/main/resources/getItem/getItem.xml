@@ -53,6 +53,6 @@
     <sequence>
         <class name="org.wso2.carbon.connector.GetItem"/>
         <header name="Action" value="http://schemas.microsoft.com/exchange/services/2006/messages/GetItem"/>
-        <ews.callWithRetry/>
+        <ews.callOperation/>
     </sequence>
 </template>

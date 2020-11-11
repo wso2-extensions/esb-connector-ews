@@ -112,6 +112,6 @@
     <sequence>
         <class name="org.wso2.carbon.connector.CreateItem"/>
         <header name="Action" value="http://schemas.microsoft.com/exchange/services/2006/messages/CreateItem"/>
-        <ews.callWithRetry/>
+        <ews.callOperation/>
     </sequence>
 </template>

@@ -39,6 +39,6 @@
         <class name="org.wso2.carbon.connector.UpdateItem"/>
         <header name="Action"
                 value="http://schemas.microsoft.com/exchange/services/2006/messages/UpdateItem"/>
-        <ews.callWithRetry/>
+        <ews.callOperation/>
     </sequence>
 </template>

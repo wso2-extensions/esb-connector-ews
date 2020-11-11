@@ -31,6 +31,8 @@
     <parameter name="name" description="Name of the connection"/>
     <parameter name="tokenEndpointHostname"
                description="Instance url for OAuth 2.0 token endpoint when issuing authentication requests in your application."/>
+    <parameter name="scope"
+               description="The resource identifier (application ID URI) of the resource."/>
     <sequence>
         <property name="EWS_BLOCKING" expression="$func:blocking"/>
         <property name="uri.var.ews.apiUrl" expression="$func:endpointUrl" scope="default" type="STRING"/>
@@ -40,6 +42,7 @@
         <property name="uri.var.accessToken" expression="$func:accessToken"/>
         <property name="uri.var.refreshToken" expression="$func:refreshToken"/>
         <property name="uri.var.tokenEndpointHostname" expression="$func:tokenEndpointHostname"/>
+        <property name="uri.var.scope" expression="$func:scope"/>
         <property name="uri.var.accessTokenRegistryPath" expression="fn:concat('connectors/ews/accessToken' ,$func:name)"/>
         <filter source="boolean($ctx:uri.var.tokenEndpointHostname)" regex="false">
             <then>
@@ -48,5 +51,10 @@
         </filter>
         <property name="uri.var.tokenEndpointUrl"
                   expression="fn:concat($ctx:uri.var.tokenEndpointHostname, '/', $ctx:uri.var.tenantId,'/oauth2/v2.0/token')"/>
+        <filter source="boolean($ctx:uri.var.scope)" regex="false">
+            <then>
+                <property name="uri.var.scope" value="https://outlook.office365.com/.default"/>
+            </then>
+        </filter>
     </sequence>
 </template>
