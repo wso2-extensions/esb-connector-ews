@@ -16,7 +16,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<template name="callOptions" xmlns="http://ws.apache.org/ns/synapse">
+<template name="callEndpoint" xmlns="http://ws.apache.org/ns/synapse">
     <sequence>
         <header name="To" expression="$ctx:uri.var.ews.apiUrl"/>
         <property name="messageType" scope="axis2" value="text/xml"/>

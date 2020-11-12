@@ -18,49 +18,14 @@
   -->
 <template name="callWithRetry" xmlns="http://ws.apache.org/ns/synapse">
     <sequence>
-        <filter source="boolean($ctx:uri.var.refreshToken)" regex="true">
-            <then>
-                <enrich>
-                    <source clone="true" type="body"/>
-                    <target property="ORIGINAL_MSG_PAYLOAD" type="property"/>
-                </enrich>
-                <property name="uri.var.accessToken.reg"
-                          expression="get-property('registry', $ctx:uri.var.accessTokenRegistryPath)"/>
-                <filter source="$ctx:uri.var.accessToken.reg = ''" regex="false">
-                    <then>
-                        <header name="Authorization"
-                                expression="fn:concat('Bearer ', $ctx:uri.var.accessToken.reg)"
-                                scope="transport"/>
-                    </then>
-                    <else>
-                        <header name="Authorization"
-                                expression="fn:concat('Bearer ', $ctx:uri.var.accessToken)"
-                                scope="transport"/>
-                    </else>
-                </filter>
-                <ews.callOptions/>
-                <property name="httpCode" expression="$axis2:HTTP_SC" scope="default" type="STRING"/>
-                <filter source="$ctx:httpCode" regex="4[0-9][0-9]">
-                    <then>
-                        <class name="org.wso2.carbon.connector.core.RefreshAccessToken"/>
-                        <!--<ews.refreshToken/>-->
-                        <header name="Authorization"
-                                expression="fn:concat('Bearer ', $ctx:uri.var.accessToken)"
-                                scope="transport"/>
-                        <enrich>
-                            <source clone="true" property="ORIGINAL_MSG_PAYLOAD" type="property"/>
-                            <target type="body"/>
-                        </enrich>
-                        <ews.callOptions/>
-                    </then>
-                </filter>
-            </then>
-            <else>
-                <header name="Authorization"
-                        expression="fn:concat('Bearer ', $ctx:uri.var.accessToken)"
-                        scope="transport"/>
-                <ews.callOptions/>
-            </else>
-        </filter>
+        <class name="org.wso2.carbon.connector.core.RefreshAccessToken"/>
+        <header name="Authorization"
+                expression="fn:concat('Bearer ', $ctx:uri.var.accessToken)"
+                scope="transport"/>
+        <enrich>
+            <source clone="true" property="ORIGINAL_MSG_PAYLOAD" type="property"/>
+            <target type="body"/>
+        </enrich>
+        <ews.callEndpoint/>
     </sequence>
 </template>

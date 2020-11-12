@@ -22,13 +22,18 @@
 	    		<file>init.xml</file>
 	    		<description>init operation</description>
 		</component>
+		<component name="callOperation">
+			<file>callOperation.xml</file>
+			<description>Templating the token generation and operation call</description>
+			<hidden>true</hidden>
+		</component>
 		<component name="callWithRetry">
 			<file>callWithRetry.xml</file>
 			<description>Templating the retry call</description>
 			<hidden>true</hidden>
 		</component>
-		<component name="callOptions">
-			<file>callOptions.xml</file>
+		<component name="callEndpoint">
+			<file>callEndpoint.xml</file>
 			<description>Templating the http call types GET, POST, etc.</description>
 			<hidden>true</hidden>
 		</component>
