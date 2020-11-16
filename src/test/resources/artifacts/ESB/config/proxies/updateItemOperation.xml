@@ -69,8 +69,10 @@
                    type="STRING"/>
          <ews.init>
             <endpointUrl>{get-property('system','EWS_ENDPOINT_URL')}</endpointUrl>
-            <username>{get-property('system','EWS_ENDPOINT_USER_NAME')}</username>
-            <password>{get-property('system','EWS_ENDPOINT_PASSWORD')}</password>
+            <tenantId>{get-property('system','EWS_TENANT_ID')}</tenantId>
+            <clientId>{get-property('system','EWS_CLIENT_ID')}</clientId>
+            <clientSecret>{get-property('system','EWS_CLIENT_SECRET')}</clientSecret>
+            <name>ews</name>
          </ews.init>
          <ews.updateItem>
             <requestServerVersion>{$ctx:uri.var.requestServerVersion}</requestServerVersion>
