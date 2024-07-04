@@ -9,5 +9,13 @@
         "communication",
         "Application"
     ],
-    "releases": []
+    "releases": [
+        {
+            "tagName": "v1.0.2",
+            "products": [
+                "ESB 4.9.0"
+            ],
+            "isHidden": false
+        }
+    ]
 }
