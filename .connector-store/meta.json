@@ -4,7 +4,7 @@
     "category": "Communication",
     "documentationUrl": "https://docs.wso2.com/display/ESBCONNECTORS/EWS+Connector",
     "description": "The EWS connector allows you to access your Exchange Server instance through WSO2 ESB. Microsoft Exchange Server is a mail server and calendaring server developed by Microsoft. It runs exclusively on Windows Server operating systems.",
-    "status": "Active",
+    "status": "Inactive",
     "labels": [
         "communication",
         "Application"
